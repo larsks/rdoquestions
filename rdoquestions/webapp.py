@@ -24,16 +24,18 @@ def setup_askbot_object():
 @view('questions')
 def unanswered(tags=None):
     limit = bottle.request.params.get('l', cfg.get('limit'))
-    sortkey = bottle.request.params.get('s', 'age-asc')
+    sortkey = bottle.request.params.get('s', 'age')
+    sortorder = bottle.request.params.get('o', 'asc')
 
     q = bottle.request.askbot.questions(
         tags=tags, scope='unanswered',
-        sort=sortkey, limit=limit
+        sort='%s-%s' % (sortkey, sortorder), limit=limit
     )
 
     return {'questions': q,
             'tags': tags,
-            'baseurl': cfg['baseurl']}
+            'baseurl': cfg['baseurl'],
+            }
 
 @app.route('/unanswered/tag/<tag>')
 def unanswered_tag(tag):
@@ -46,6 +48,10 @@ def unanswered_all():
 @app.route('/assets/<path:path>')
 def asset(path):
     return bottle.static_file(path, root=settings.assets_dir)
+
+@app.route('/')
+def index():
+    bottle.redirect('/unanswered')
 
 def parse_args():
     p = argparse.ArgumentParser()
