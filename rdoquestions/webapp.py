@@ -16,6 +16,9 @@ from .templates import view
 
 app = bottle.app()
 
+with open(os.environ.get('RDOQUESTIONS_CONFIG_FILE', 'askbot.yaml')) as fd:
+    cfg = yaml.load(fd)
+
 @bottle.hook('before_request')
 def setup_askbot_object():
     bottle.request.askbot = askbot.Askbot(
@@ -52,41 +55,4 @@ def asset(path):
 @app.route('/')
 def index():
     bottle.redirect('/unanswered')
-
-def parse_args():
-    p = argparse.ArgumentParser()
-    p.add_argument('--config', '-f',
-                   default='askbot.yml')
-    p.add_argument('--debug', '-d',
-                   action='store_const',
-                   const=logging.DEBUG,
-                   dest='loglevel')
-    p.add_argument('--verbose', '-v',
-                   action='store_const',
-                   const=logging.INFO,
-                   dest='loglevel')
-    p.set_defaults(loglevel=logging.WARN)
-
-    return p.parse_args()
-
-def main():
-    global cfg
-    args = parse_args()
-
-    logging.basicConfig(
-        level = args.loglevel)
-
-    with open(args.config) as fd:
-        cfg = yaml.load(fd)
-
-    if cfg is None or not 'askbot' in cfg:
-        logging.error('missing askbot configuration')
-        return 1
-
-    cfg = cfg['askbot']
-
-    app.run()
-
-if __name__ == '__main__':
-    sys.exit(main())
 
