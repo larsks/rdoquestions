@@ -16,8 +16,11 @@ from .templates import view
 
 app = bottle.app()
 
-with open(os.environ.get('RDOQUESTIONS_CONFIG_FILE', 'askbot.yaml')) as fd:
-    cfg = yaml.load(fd)
+with open(os.environ.get('ASKBOT_CONFIG_FILE', 'askbot.yaml')) as fd:
+    try:
+        cfg = yaml.load(fd)['askbot']
+    except (KeyError, AttributeError):
+        cfg = { 'endpoint': os.environ.get['ASKBOT_API_ENDPOINT'] }
 
 @bottle.hook('before_request')
 def setup_askbot_object():
