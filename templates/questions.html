@@ -1,0 +1,37 @@
+{% extends "page.html" %}
+{% block title %}Questions{% if tags %} tagged {{tags|join(', ')}}{% endif %}{% endblock %}
+{% block content %}
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Author</th>
+      <th>Posted</th>
+      <th>Last Activity</th>
+      <th>Answers</th>
+      <th>Votes</th>
+      <th>Tags</th>
+      <th>Title</th>
+      <th>Actions</th>
+    </tr>
+  {% for q in questions %}
+  <tr>
+    <td><a href="{{q.url}}">{{q.id}}</a></td>
+    <td>{{q.author.username}}</td>
+    <td>{{q.added_at|strftime}}</td>
+    <td>{{q.last_activity_at|strftime}}</td>
+    <td>{{q.answer_count}}</td>
+    <td>{{q.score}}</td>
+    <td>{% for tag in q.tags %}
+      <a href="/unanswered/tag/{{tag}}">{{tag}}</a> 
+      {% endfor %}</td>
+    <td><a href="{{q.url}}">{{q.title}}</a></td>
+    <td>
+      <a href="{{baseurl}}/{{q.id}}/close/">close</a> |
+      <a href="{{baseurl}}/{{q.id}}/retag/">retag</a> |
+      <a href="{{baseurl}}/{{q.id}}/edit/">edit</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+
