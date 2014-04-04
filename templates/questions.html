@@ -1,6 +1,12 @@
 {% extends "page.html" %}
 {% block title %}Questions{% if tags %} tagged {{tags|join(', ')}}{% endif %}{% endblock %}
 {% block content %}
+
+{% filter markdown %}
+This is a list of questions {% if tags %}tagged {{tags|join(', ')}}{% endif%}
+from <{{baseurl}}>.
+{% endfilter %}
+
   <table>
     <tr>
       <th>#</th>
