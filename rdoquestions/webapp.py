@@ -40,7 +40,8 @@ def unanswered(tags=None):
 
     return {'questions': q,
             'tags': tags,
-            'baseurl': cfg['baseurl'],
+            'askurl': cfg['askurl'],
+            'limit': limit,
             }
 
 @app.route('/unanswered/tag/<tag>')

@@ -4,7 +4,7 @@
 
 {% filter markdown %}
 This is a list of questions {% if tags %}tagged {{tags|join(', ')}}{% endif%}
-from <{{baseurl}}>.
+from <{{askurl}}>.
 {% endfilter %}
 
   <table>
@@ -32,9 +32,9 @@ from <{{baseurl}}>.
       {% endfor %}</td>
     <td><a href="{{q.url}}">{{q.title}}</a></td>
     <td>
-      <a href="{{baseurl}}/{{q.id}}/close/">close</a> |
-      <a href="{{baseurl}}/{{q.id}}/retag/">retag</a> |
-      <a href="{{baseurl}}/{{q.id}}/edit/">edit</a>
+      <a href="{{askurl}}/{{q.id}}/close/">close</a> |
+      <a href="{{askurl}}/{{q.id}}/retag/">retag</a> |
+      <a href="{{askurl}}/{{q.id}}/edit/">edit</a>
     </td>
   </tr>
   {% endfor %}
